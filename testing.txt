@@ -1,31 +1,41 @@
 Testing:
 
-Enter a task (or 'end' to exit): MA122
-1 / 10, how important is this task to you? 8
-How many days until this task is due? (Enter 0 for no due date): 3
-Enter a task (or 'end' to exit): MA102
-1 / 10, how important is this task to you? 7
-How many days until this task is due? (Enter 0 for no due date): 5
-Enter a task (or 'end' to exit): CP104
-1 / 10, how important is this task to you? 7
-How many days until this task is due? (Enter 0 for no due date): 14
-Enter a task (or 'end' to exit): EN107
-1 / 10, how important is this task to you? 4
-How many days until this task is due? (Enter 0 for no due date): 14
-Enter a task (or 'end' to exit): OL140
-1 / 10, how important is this task to you? 3
-How many days until this task is due? (Enter 0 for no due date): 1
-Enter a task (or 'end' to exit): MA122 Exam
-1 / 10, how important is this task to you? 10
-How many days until this task is due? (Enter 0 for no due date): 45
+Enter a task (or 'end' to exit): MA122 Webwork
+On a scale of 1 to 10, how important is this task to you? 9
+Enter the due date for this task (YYYY-MM-DD) or leave blank for no due date: 2024-03-10
+Enter a task (or 'end' to exit): MA102 Webwork
+On a scale of 1 to 10, how important is this task to you? 8
+Enter the due date for this task (YYYY-MM-DD) or leave blank for no due date: 2024-03-12
+Enter a task (or 'end' to exit): EN107 Term Essay
+On a scale of 1 to 10, how important is this task to you? 8
+Enter the due date for this task (YYYY-MM-DD) or leave blank for no due date: 2024-04-01
+Enter a task (or 'end' to exit): OL140 Discussion 4
+On a scale of 1 to 10, how important is this task to you? 6
+Enter the due date for this task (YYYY-MM-DD) or leave blank for no due date: 2024-03-18
+Enter a task (or 'end' to exit): CP104 Lab
+On a scale of 1 to 10, how important is this task to you? 7
+Enter the due date for this task (YYYY-MM-DD) or leave blank for no due date: 2024-03-18
+Enter a task (or 'end' to exit): Get Rich
+On a scale of 1 to 10, how important is this task to you? 10
+Enter the due date for this task (YYYY-MM-DD) or leave blank for no due date: 2020-09-18
+Enter a task (or 'end' to exit): Stub my toe
+On a scale of 1 to 10, how important is this task to you? 1
+Enter the due date for this task (YYYY-MM-DD) or leave blank for no due date: 
 Enter a task (or 'end' to exit): end
-Task: MA122, Ranking: 0.84
-Task: MA122 Exam, Ranking: 0.75
-Task: MA102, Ranking: 0.74
-Task: OL140, Ranking: 0.65
-Task: CP104, Ranking: 0.64
-Task: EN107, Ranking: 0.49
-None
+Overdue:
+Get Rich | Days overdue: 1268
+Due Tomorrow:
+MA122 Webwork | Due date: 1
+Medium Priority:
+MA102 Webwork | Due date: 3
+Low Priority:
+EN107 Term Essay | Due date: 23
+CP104 Lab | Due date: 9
+OL140 Discussion 4 | Due date: 9
+Very Low Priority:
+Stub my toe | Due date: N/A
+
+Process finished with exit code 0
 
 
 
