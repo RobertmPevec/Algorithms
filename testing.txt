@@ -1,0 +1,31 @@
+Testing:
+
+Enter a task (or 'end' to exit): MA122
+1 / 10, how important is this task to you? 8
+How many days until this task is due? (Enter 0 for no due date): 3
+Enter a task (or 'end' to exit): MA102
+1 / 10, how important is this task to you? 7
+How many days until this task is due? (Enter 0 for no due date): 5
+Enter a task (or 'end' to exit): CP104
+1 / 10, how important is this task to you? 7
+How many days until this task is due? (Enter 0 for no due date): 14
+Enter a task (or 'end' to exit): EN107
+1 / 10, how important is this task to you? 4
+How many days until this task is due? (Enter 0 for no due date): 14
+Enter a task (or 'end' to exit): OL140
+1 / 10, how important is this task to you? 3
+How many days until this task is due? (Enter 0 for no due date): 1
+Enter a task (or 'end' to exit): MA122 Exam
+1 / 10, how important is this task to you? 10
+How many days until this task is due? (Enter 0 for no due date): 45
+Enter a task (or 'end' to exit): end
+Task: MA122, Ranking: 0.84
+Task: MA122 Exam, Ranking: 0.75
+Task: MA102, Ranking: 0.74
+Task: OL140, Ranking: 0.65
+Task: CP104, Ranking: 0.64
+Task: EN107, Ranking: 0.49
+None
+
+
+

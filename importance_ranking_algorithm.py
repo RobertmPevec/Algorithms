@@ -1,0 +1,2 @@
+from functions import importance_ranking_algorithm
+print(importance_ranking_algorithm())
