@@ -25,6 +25,8 @@ def list_ranking(task_rankings):
 def categorize_ranking(ranking, days_until_due):
     if days_until_due < 0:
         return "Overdue"
+    elif days_until_due == 0:
+        return "Due Today"
     elif days_until_due == 1:
         return "Due Tomorrow"
     elif ranking >= 0.9:
@@ -40,7 +42,7 @@ def categorize_ranking(ranking, days_until_due):
 
 
 def group_tasks_by_priority(tasks):
-    priority_groups = {"Overdue": [], "Due Tomorrow": [], "Very High Priority": [], "High Priority": [],
+    priority_groups = {"Overdue": [],"Due Today": [], "Due Tomorrow": [], "Very High Priority": [], "High Priority": [],
                        "Medium Priority": [], "Low Priority": [], "Very Low Priority": []}
     for task in tasks:
         category = categorize_ranking(task["ranking"], task["days_until_due"])
@@ -69,9 +71,9 @@ def importance_ranking_algorithm():
             days_until_due = math.inf
 
         if days_until_due != math.inf:
-            time_ranking = 0.7 * math.exp(-0.25 * (days_until_due - 1)) + 0.3
+            time_ranking = 0.75 * math.exp(-0.3 * (days_until_due - 1)) + 0.25
         else:
-            time_ranking = 0.3
+            time_ranking = 0.25
 
         final_ranking = (time_ranking + importance_ranking) / 2
         task_rankings.append({"task": task_name, "ranking": final_ranking, "days_until_due": days_until_due})
@@ -83,6 +85,10 @@ def importance_ranking_algorithm():
             for task in tasks:
                 if task['days_until_due'] == math.inf:
                     due_date = '| Due date: N/A'
+                elif task['days_until_due'] == 0:
+                    due_date = '| Due date: Today'
+                elif task['days_until_due'] == 1:
+                    due_date = '| Due date: Tomorrow'
                 elif task['days_until_due'] < 0:
                     due_date = f"| Days overdue: {abs(task['days_until_due'])}"
                 else:
