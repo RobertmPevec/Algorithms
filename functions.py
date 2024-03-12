@@ -51,6 +51,7 @@ def group_tasks_by_priority(tasks):
 
 
 def importance_ranking_algorithm():
+    summary_message = ""
     task_rankings = []
     today = datetime.now().date()
     while True:
@@ -81,16 +82,13 @@ def importance_ranking_algorithm():
     priority_groups = group_tasks_by_priority(list_ranking(task_rankings))
     for category, tasks in priority_groups.items():
         if tasks:
-            print(f"\033[4m{category}:\033[0m")
+            summary_message += f"\n{category}:\n"
             for task in tasks:
-                if task['days_until_due'] == math.inf:
-                    due_date = '| Due date: N/A'
-                elif task['days_until_due'] == 0:
-                    due_date = '| Due date: Today'
-                elif task['days_until_due'] == 1:
-                    due_date = '| Due date: Tomorrow'
-                elif task['days_until_due'] < 0:
-                    due_date = f"| Days overdue: {abs(task['days_until_due'])}"
-                else:
-                    due_date = f"| Due date: {task['days_until_due']}"
-                print(f"{task['task']} {due_date}")
+                due_date_str = "Due date: N/A" if task['days_until_due'] == math.inf else \
+                    "Due today" if task['days_until_due'] == 0 else \
+                        "Due tomorrow" if task['days_until_due'] == 1 else \
+                            f"{abs(task['days_until_due'])} days overdue" if task['days_until_due'] < 0 else \
+                                f"Due in {task['days_until_due']} days"
+                summary_message += f"- {task['task']} | {due_date_str}\n"
+
+    return summary_message
