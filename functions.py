@@ -29,11 +29,11 @@ def categorize_ranking(ranking, days_until_due):
         return "Due Today"
     elif days_until_due == 1:
         return "Due Tomorrow"
-    elif ranking >= 0.9:
+    elif ranking >= 0.875:
         return "Very High Priority"
-    elif ranking >= 0.8:
+    elif ranking >= 0.75:
         return "High Priority"
-    elif ranking >= 0.65:
+    elif ranking >= 0.60:
         return "Medium Priority"
     elif ranking >= 0.35:
         return "Low Priority"
@@ -50,80 +50,50 @@ def group_tasks_by_priority(tasks):
     return priority_groups
 
 
-def importance_ranking_algorithm():
+def importance_ranking_algorithm(tasks):
     summary_message = ""
-    task_rankings = []
     today = datetime.now().date()
-    while True:
-        task_name = input("Enter a task (or 'end' to exit): ")
-        if task_name.lower() == "end":
-            break
-        importance_ranking = float(input("On a scale of 1 to 10, how important is this task to you? "))
-        if importance_ranking < 1 or importance_ranking > 10:
-            print("Please enter a number between 1 and 10.")
-            continue
-        importance_ranking /= 10
+    task_rankings = []
+    summary_message += "Here is your updated task list:"
+    for task in tasks:
+        task_name = task["name"]
+        due_date_input = task["due_date"]
+        weight = task["weight"]
 
-        due_date_input = input("Enter the due date for this task (YYYY-MM-DD) or leave blank for no due date: ")
-        if due_date_input:
+        importance_ranking = float(weight) / 10
+
+        # Handle 'n/a' due dates
+        if due_date_input.lower() == "n/a":
+            days_until_due = math.inf
+        else:
             due_date = datetime.strptime(due_date_input, "%Y-%m-%d").date()
             days_until_due = (due_date - today).days
-        else:
-            days_until_due = math.inf
 
         if days_until_due != math.inf:
-            time_ranking = 0.75 * math.exp(-0.3 * (days_until_due - 1)) + 0.25
+            time_ranking = 0.70 * math.exp(-0.3 * (days_until_due - 1)) + 0.3
         else:
-            time_ranking = 0.25
+            time_ranking = 0.3
 
         final_ranking = (time_ranking + importance_ranking) / 2
         task_rankings.append({"task": task_name, "ranking": final_ranking, "days_until_due": days_until_due})
 
     priority_groups = group_tasks_by_priority(list_ranking(task_rankings))
+
     for category, tasks in priority_groups.items():
         if tasks:
             summary_message += f"\n{category}:\n"
             for task in tasks:
-                if task['days_until_due'] == math.inf:
-                    due_date_str = "Due date N/A"
-                elif task['days_until_due'] == 0:
-                    due_date_str = ""
-                elif task['days_until_due'] == 1:
-                    due_date_str = ""
-                elif task['days_until_due'] < 0:
+                due_date_str = "Due date N/A" if task['days_until_due'] == math.inf else f"Due in {task['days_until_due']} days"
+                if task['days_until_due'] < 0:
                     due_date_str = f"{abs(task['days_until_due'])} days overdue"
-                else:
-                    due_date_str = f"Due in {task['days_until_due']} days"
+                elif task['days_until_due'] == 0:
+                    due_date_str = "Due Today"
+                elif task['days_until_due'] == 1:
+                    due_date_str = "Due Tomorrow"
 
-                summary_message += f"{task['task']} | {due_date_str}\n"
+                if task['days_until_due'] < 0 or task['days_until_due'] >= 2:
+                    summary_message += f"-{task['task']} | {due_date_str}\n"
+                else:
+                    summary_message += f"-{task['task']}\n"
 
     return summary_message
-
-from functions import importance_ranking_algorithm
-from twilio.rest import Client
-from flask import Flask, request, redirect
-from twilio.twiml.messaging_response import MessagingResponse
-import key
-summary_message = importance_ranking_algorithm()
-client = Client(key.account_sid, key.auth_token)
-message = client.messages.create(
-    body=summary_message,
-    from_=key.twilio_number,
-    to=key.target_number
-)
-print(message.body)
-
-app = Flask(__name__)
-
-
-@app.route("/sms", methods=['GET', 'POST'])
-def sms_reply():
-    """Receive incoming messages without sending a message response."""
-    resp = MessagingResponse()
-
-    return str(resp)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
