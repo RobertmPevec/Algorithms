@@ -84,11 +84,46 @@ def importance_ranking_algorithm():
         if tasks:
             summary_message += f"\n{category}:\n"
             for task in tasks:
-                due_date_str = "Due date: N/A" if task['days_until_due'] == math.inf else \
-                    "Due today" if task['days_until_due'] == 0 else \
-                        "Due tomorrow" if task['days_until_due'] == 1 else \
-                            f"{abs(task['days_until_due'])} days overdue" if task['days_until_due'] < 0 else \
-                                f"Due in {task['days_until_due']} days"
-                summary_message += f"- {task['task']} | {due_date_str}\n"
+                if task['days_until_due'] == math.inf:
+                    due_date_str = "Due date N/A"
+                elif task['days_until_due'] == 0:
+                    due_date_str = ""
+                elif task['days_until_due'] == 1:
+                    due_date_str = ""
+                elif task['days_until_due'] < 0:
+                    due_date_str = f"{abs(task['days_until_due'])} days overdue"
+                else:
+                    due_date_str = f"Due in {task['days_until_due']} days"
+
+                summary_message += f"{task['task']} | {due_date_str}\n"
 
     return summary_message
+
+from functions import importance_ranking_algorithm
+from twilio.rest import Client
+from flask import Flask, request, redirect
+from twilio.twiml.messaging_response import MessagingResponse
+import key
+summary_message = importance_ranking_algorithm()
+client = Client(key.account_sid, key.auth_token)
+message = client.messages.create(
+    body=summary_message,
+    from_=key.twilio_number,
+    to=key.target_number
+)
+print(message.body)
+
+app = Flask(__name__)
+
+
+@app.route("/sms", methods=['GET', 'POST'])
+def sms_reply():
+    """Receive incoming messages without sending a message response."""
+    resp = MessagingResponse()
+
+    return str(resp)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
