@@ -1,8 +1,19 @@
+import pytz
+from apscheduler.schedulers.background import BackgroundScheduler
 from functions import importance_ranking_algorithm
 from twilio.rest import Client
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 import key
+
+
+def sms_scheduler():
+    eastern = pytz.timezone('America/Toronto')
+    scheduler = BackgroundScheduler(timezone=eastern)
+    scheduler.add_job(importance_ranking_algorithm, 'cron', hour=11, minute=10, args=[tasks])
+    scheduler.start()
+
+
 tasks = [
     {"name": "MA122 homework", "due_date": "n/a", "weight": 8},
     {"name": "EN107 essay", "due_date": "2024-03-14", "weight": 8},
